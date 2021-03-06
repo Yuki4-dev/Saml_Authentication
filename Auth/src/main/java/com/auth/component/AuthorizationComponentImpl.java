@@ -8,6 +8,7 @@ import javax.servlet.http.Cookie;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.auth.entity.TokenInfo;
 import com.auth.entity.User;
@@ -29,7 +30,7 @@ public class AuthorizationComponentImpl implements AuthorizationComponentIntf
 	@Override
 	public boolean checkToken(String tokenValue)
 	{
-		if(tokenValue == null)
+		if(StringUtils.isEmpty(tokenValue))
 		{
 			return false;
 		}
@@ -48,7 +49,7 @@ public class AuthorizationComponentImpl implements AuthorizationComponentIntf
 	@Override
 	public boolean login(String userName, String passWord)
 	{
-		if(userName == null || passWord == null)
+		if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord))
 		{
 			return false;
 		}
