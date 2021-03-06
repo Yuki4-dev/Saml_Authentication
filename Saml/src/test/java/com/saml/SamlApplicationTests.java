@@ -26,9 +26,6 @@ class SamlApplicationTests
 	@Autowired
 	private MockMvc mockMvc;
 
-	//@MockBean
-	//private SamlAplServiceIntf samlAplServise;
-
 	@MockBean
 	private SamlAplComponentIntf  SamlAplComponent;
 
