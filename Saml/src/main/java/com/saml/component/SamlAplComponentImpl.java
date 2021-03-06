@@ -2,8 +2,10 @@ package com.saml.component;
 
 import java.io.IOException;
 
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.NameValuePair;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.saml.SamlUtil;
 
@@ -18,15 +20,16 @@ public class SamlAplComponentImpl implements SamlAplComponentIntf
 	@Override
 	public boolean check(String token)
 	{
-		if (token == null || token.isEmpty())
+		if (StringUtils.isEmpty(token))
 		{
 			return false;
 		}
 
 		System.out.println("token : " + token);
-		var method =  SamlUtil.doPost(AUTH_URL, new NameValuePair[]{new NameValuePair(AUTH_TOKEN,token)});
+		HttpMethod method = null;
 		try
 		{
+			method =  SamlUtil.doPost(AUTH_URL, new NameValuePair[]{new NameValuePair(AUTH_TOKEN,token)});
 			if (method.getStatusLine() != null && method.getStatusCode() == STATUS_CODE_SUCCES)
 			{
 				return method.getResponseBodyAsString().equals(AUTH_OK);
@@ -35,6 +38,13 @@ public class SamlAplComponentImpl implements SamlAplComponentIntf
 		catch (IOException e)
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			if(method != null)
+			{
+				method.releaseConnection();
+			}
 		}
 
 		return false;

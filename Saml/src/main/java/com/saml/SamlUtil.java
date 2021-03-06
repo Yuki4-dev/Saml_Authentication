@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -36,25 +37,18 @@ public class SamlUtil
 		response.sendRedirect(sb.toString());
 	}
 
-	public static HttpMethod doPost(String requestUrl,NameValuePair[] params)
+	public static HttpMethod doPost(String requestUrl,NameValuePair[] params) throws HttpException, IOException
 	{
 		var method = new PostMethod(requestUrl);
+		method.setFollowRedirects(false);
 		method.setQueryString(params);
 		return request(method);
 	}
 
-	private static HttpMethod request(HttpMethod method)
+	private static HttpMethod request(HttpMethod method) throws HttpException, IOException
 	{
 		var client = new  HttpClient();
-		try
-		{
-			client.executeMethod(method);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
+		client.executeMethod(method);
 		return method;
 	}
 }

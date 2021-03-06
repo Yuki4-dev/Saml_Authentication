@@ -13,7 +13,7 @@ public class UserRepositoryMemoryImpl implements UserRepositoryIntf
 	@Override
 	public Optional<User> select(String userName)
 	{
-		return AuthUtil.USER_MEMORY_REPOGITRY.stream().filter((x) -> x.getUserName().equals(userName)).findFirst();
+		return AuthUtil.USER_MEMORY_REPOGITRY.stream().filter(x -> x.getUserName().equals(userName)).findFirst();
 	}
 
 	@Override

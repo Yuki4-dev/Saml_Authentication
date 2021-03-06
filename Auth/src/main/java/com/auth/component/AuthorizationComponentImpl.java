@@ -4,8 +4,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,6 @@ import com.auth.repositry.UserRepositoryIntf;
 public class AuthorizationComponentImpl implements AuthorizationComponentIntf
 {
 	private final int TIMEOUT = 60 * 60 * 2;
-	private final String USERNAME = "username";
-	private final String PASSWORD = "password";
 	private final String AUTH_TOKEN = "authtoken";
 
 	@Autowired
@@ -31,9 +27,8 @@ public class AuthorizationComponentImpl implements AuthorizationComponentIntf
 	private TokenRepositoryIntf tokenRepositry;
 
 	@Override
-	public boolean checkToken(HttpServletRequest request, HttpServletResponse response)
+	public boolean checkToken(String tokenValue)
 	{
-		var tokenValue = request.getParameter(AUTH_TOKEN);
 		if(tokenValue == null)
 		{
 			return false;
@@ -51,10 +46,8 @@ public class AuthorizationComponentImpl implements AuthorizationComponentIntf
 	}
 
 	@Override
-	public boolean login(HttpServletRequest request, HttpServletResponse response)
+	public boolean login(String userName, String passWord)
 	{
-		var userName = request.getParameter(USERNAME);
-		var passWord = request.getParameter(PASSWORD);
 		if(userName == null || passWord == null)
 		{
 			return false;

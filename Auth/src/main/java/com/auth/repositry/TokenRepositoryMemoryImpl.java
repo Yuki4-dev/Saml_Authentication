@@ -13,7 +13,7 @@ public class TokenRepositoryMemoryImpl implements TokenRepositoryIntf
 	@Override
 	public Optional<TokenInfo> select(String token)
 	{
-		return AuthUtil.TOKEN_MEMORY_REPOGITRY.stream().filter((x) -> x.getValue().equals(token)).findFirst();
+		return AuthUtil.TOKEN_MEMORY_REPOGITRY.stream().filter(x -> x.getValue().equals(token)).findFirst();
 	}
 
 	@Override

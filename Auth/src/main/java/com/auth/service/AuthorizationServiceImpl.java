@@ -18,8 +18,11 @@ import com.auth.component.AuthorizationComponentIntf;
 public class AuthorizationServiceImpl implements AuthorizationServiceIntf
 {
 	private final String TARGET_URL = "targeturl";
+	private final String AUTH_TOKEN = "authtoken";
 	private final String AUTH_OK = "ok";
 	private final String AUTH_NG = "ng";
+	private final String USERNAME = "username";
+	private final String PASSWORD = "password";
 
 	@Autowired
 	private AuthorizationComponentIntf authorizationComponent;
@@ -31,7 +34,7 @@ public class AuthorizationServiceImpl implements AuthorizationServiceIntf
 	public void execute(HttpServletRequest request, HttpServletResponse response)
 	{
 		var result = AUTH_NG;
-		if (authorizationComponent.checkToken(request, response))
+		if (authorizationComponent.checkToken(request.getParameter(AUTH_TOKEN)))
 		{
 			result = AUTH_OK;
 		}
@@ -52,7 +55,9 @@ public class AuthorizationServiceImpl implements AuthorizationServiceIntf
 	@Override
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response)
 	{
-		if (authorizationComponent.login(request,response))
+		var name = request.getParameter(USERNAME);
+		var pass = request.getParameter(PASSWORD);
+		if (authorizationComponent.login(name, pass))
 		{
 			System.out.println("login succes");
 			var token = authorizationComponent.createToken();
@@ -76,9 +81,8 @@ public class AuthorizationServiceImpl implements AuthorizationServiceIntf
 		else
 		{
 			System.out.println("login error");
-			var model = new ModelAndView();
+			var model = new ModelAndView("login");
 			model.addObject("error", true);
-			model.setViewName("login");
 			return model;
 		}
 	}

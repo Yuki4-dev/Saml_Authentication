@@ -43,7 +43,7 @@ class AuthApplicationTests
 	void test1() throws Exception
 	{
 		var token = "test";
-		when(authorizationComponent.checkToken(any(),any())).thenReturn(true);
+		when(authorizationComponent.checkToken(any())).thenReturn(true);
 		mockMvc.perform(get("/check")
 				.param(AUTH_TOKEN, token))
 				.andExpect(status().isOk())
@@ -54,7 +54,7 @@ class AuthApplicationTests
 	void test2() throws Exception
 	{
 		var token = "test";
-		when(authorizationComponent.checkToken(any(),any())).thenReturn(false);
+		when(authorizationComponent.checkToken(any())).thenReturn(false);
 		mockMvc.perform(get("/check")
 				.param(AUTH_TOKEN, token))
 				.andExpect(status().isOk())

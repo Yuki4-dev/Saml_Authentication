@@ -3,6 +3,7 @@ package com.saml.service;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,21 +33,13 @@ public class SamlAplServiseImpl implements SamlAplServiceIntf
 		Cookie  token = null;
 		if(request.getCookies() != null)
 		{
-			for(var c : request.getCookies())
-			{
-				if(c.getName().equals(AUTH_TOKEN))
-				{
-					token = c;
-					break;
-				}
-			}
+			token = Stream.of(request.getCookies()).filter(c ->AUTH_TOKEN.equals(c.getName())).findFirst().orElse(null);
 		}
 
 		if (token != null &&  samlAplComponent.check(token.getValue()))
 		{
-			var model = new ModelAndView();
+			var model = new ModelAndView("top.html");
 			model.addObject("token", token.getValue()).addObject("requesturl", request.getRequestURL().toString());
-			model.setViewName("top.html");
 			return model;
 		}
 		else
